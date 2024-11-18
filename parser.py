@@ -31,13 +31,19 @@ def extract_faculty_info(faculty_div):
 
     p_tag = faculty_div.find('p') 
     title_match = re.search(r'Title\s*(.*?)(?=\s*<br|$)', str(p_tag))
-    faculty_data['title'] = title_match.group(1).strip() if title_match else 'N/A'
+    x = title_match.group(0).strip()
+    x = re.sub(r'[^\x00-\x7F]+', ' ', x)
+    faculty_data['title'] = x.split(' ', 1)[1] if x else 'N/A'
 
-    office_match = re.search(r'Title\s*(.*?)(?=\s*<br|$)', str(p_tag))
-    faculty_data['office'] = office_match.group(1).strip() if office_match else 'N/A'
+    office_match = re.search(r'Office\s*(.*?)(?=\s*<br|$)', str(p_tag))
+    x = office_match.group(0).strip()
+    x = re.sub(r'[^\x00-\x7F]+', ' ', x)
+    faculty_data['office'] = x.split(' ', 1)[1] if x else 'N/A'
 
-    phone_match = re.search(r'Title\s*(.*?)(?=\s*<br|$)', str(p_tag))
-    faculty_data['phone'] = phone_match.group(1).strip() if phone_match else 'N/A'
+    phone_match = re.search(r'Phone\s*(.*?)(?=\s*<br|$)', str(p_tag))
+    x = phone_match.group(0).strip()
+    x = re.sub(r'[^\x00-\x7F]+', ' ', x)
+    faculty_data['phone'] = x.split(' ', 1)[1] if x else 'N/A'
     
 
     email_tag = faculty_div.find('a', href=re.compile(r'mailto:.*'))
