@@ -29,14 +29,14 @@ def extract_faculty_info(faculty_div):
     name_tag = faculty_div.find('h2')
     faculty_data['name'] = name_tag.get_text(strip=True) if name_tag else 'N/A'
 
-    p_tag = faculty_div.find('p')  
-    title_match = re.search(r'Title:\s*(.*?)(?=\s*<br|$)', str(p_tag))
+    p_tag = faculty_div.find('p') 
+    title_match = re.search(r'Title\s*(.*?)(?=\s*<br|$)', str(p_tag))
     faculty_data['title'] = title_match.group(1).strip() if title_match else 'N/A'
 
-    office_match = re.search(r'Office:\s*(.*?)(?=\s*<br|$)', str(p_tag))
+    office_match = re.search(r'Title\s*(.*?)(?=\s*<br|$)', str(p_tag))
     faculty_data['office'] = office_match.group(1).strip() if office_match else 'N/A'
 
-    phone_match = re.search(r'Phone:\s*(.*?)(?=\s*<br|$)', str(p_tag))
+    phone_match = re.search(r'Title\s*(.*?)(?=\s*<br|$)', str(p_tag))
     faculty_data['phone'] = phone_match.group(1).strip() if phone_match else 'N/A'
     
 
@@ -54,6 +54,7 @@ def extract_faculty_info(faculty_div):
         faculty_data['website'] = website_tag['href'].strip()
     else:
         faculty_data['website'] = 'N/A'
+
     print(faculty_data)
     return faculty_data
 
@@ -65,7 +66,6 @@ def parse_faculty_page(html):
     faculty_divs = soup.find_all('div', class_='clearfix')
     
     for faculty_div in faculty_divs:
-        print(faculty_div)
         faculty_data = extract_faculty_info(faculty_div)
         faculty_list.append(faculty_data)
 
@@ -77,8 +77,6 @@ def main():
     page = pages_collection.find_one({'url': target_url})
     html = page['html']
     faculty_list = parse_faculty_page(html)
-    print(faculty_list)
-    print(type(faculty_list))
     #professors_collection.insert_many(faculty_list)
     for faculty_data in faculty_list:
         if faculty_data is not None:
