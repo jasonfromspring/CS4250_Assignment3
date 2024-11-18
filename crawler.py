@@ -55,13 +55,11 @@ def parseHTML(html, base_url):
     soup = BeautifulSoup(html, 'html.parser')
     links = set()
     
-    # Find all anchor tags <a> and get their href attributes
     for a_tag in soup.find_all('a', href=True):
         href = a_tag['href']
-        full_url = urljoin(base_url, href)  # Convert relative URL to absolute
+        full_url = urljoin(base_url, href)
         parsed_url = urlparse(full_url)
         
-        # Only add the link if it's an HTML or SHTML page
         if parsed_url.path.endswith(('.html', '.shtml')):
             links.add(full_url)
 
